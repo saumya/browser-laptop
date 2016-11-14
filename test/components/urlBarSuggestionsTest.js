@@ -1,6 +1,7 @@
 /* global describe, it, beforeEach */
 
 const Brave = require('../lib/brave')
+const Immutable = require('immutable')
 const messages = require('../../js/constants/messages')
 const {urlInput, urlBarSuggestions} = require('../lib/selectors')
 
@@ -26,7 +27,7 @@ describe('urlBarSuggestions', function () {
       .windowByUrl(Brave.browserWindowUrl)
       .waitUntil(function () {
         return this.getAppState().then((val) => {
-          return !!val.value.sites.find((site) => site.location === page1Url)
+          return !!Immutable.fromJS(val.value.sites).find((site) => site.get('location') === page1Url)
         })
       })
       .tabByIndex(0)
@@ -39,7 +40,7 @@ describe('urlBarSuggestions', function () {
       .waitForElementFocus(urlInput)
       .waitUntil(function () {
         return this.getAppState().then((val) => {
-          return !!val.value.sites.find((site) => site.location === page2Url)
+          return !!Immutable.fromJS(val.value.sites).find((site) => site.get('location') === page2Url)
         })
       })
   })
