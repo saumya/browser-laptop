@@ -193,6 +193,7 @@ class NavigationBar extends ImmutableComponent {
       </div>
       <UrlBar ref='urlBar'
         sites={this.props.sites}
+        localSearchTerms={this.props.localSearchTerms}
         activeFrameKey={this.props.activeFrameKey}
         searchDetail={this.props.searchDetail}
         loading={this.loading}
@@ -201,6 +202,7 @@ class NavigationBar extends ImmutableComponent {
         title={this.props.title}
         history={this.props.history}
         isSecure={this.props.isSecure}
+        isPrivate={this.props.isPrivate}
         locationValueSuffix={this.props.locationValueSuffix}
         startLoadTime={this.props.startLoadTime}
         endLoadTime={this.props.endLoadTime}
