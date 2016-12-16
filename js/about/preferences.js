@@ -1055,6 +1055,11 @@ class PaymentsTab extends ImmutableComponent {
           {this.enabled
             ? <SettingsList>
               <SettingCheckbox
+                dataL10nId='autoSuggestSites'
+                prefKey={settings.AUTO_SUGGEST_SITES}
+                settings={this.props.settings}
+                onChangeSetting={this.props.onChangeSetting} />
+              <SettingCheckbox
                 dataL10nId='minimumPercentage'
                 prefKey={settings.MINIMUM_PERCENTAGE}
                 settings={this.props.settings}
