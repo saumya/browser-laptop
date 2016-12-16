@@ -4,6 +4,7 @@
 
 const React = require('react')
 const ImmutableComponent = require('./immutableComponent')
+const KeyCodes = require('../../app/common/constants/keyCodes')
 
 /**
  * Represents a modal overlay
@@ -13,6 +14,10 @@ var globalInstanceCounter = 0
 var mountedInstances = []
 
 class ModalOverlay extends ImmutableComponent {
+  constructor () {
+    super()
+    this.onKeyDown = this.onKeyDown.bind(this)
+  }
 
   componentWillMount () {
     this.instanceId = globalInstanceCounter++
@@ -42,6 +47,14 @@ class ModalOverlay extends ImmutableComponent {
     }
   }
 
+  onKeyDown (e) {
+    switch (e.keyCode) {
+      case KeyCodes.ESC:
+        this.props.onEscape()
+        break
+    }
+  }
+
   get dialogContent () {
     var close = null
     var button = null
@@ -67,7 +80,7 @@ class ModalOverlay extends ImmutableComponent {
   }
 
   render () {
-    return <div className={'modal fade' + (this.state.last ? ' last' : '') + (this.props.transparentBackground ? ' transparentBackground' : '')} role='alert'>
+    return <div onKeyDown={this.onKeyDown} className={'modal fade' + (this.state.last ? ' last' : '') + (this.props.transparentBackground ? ' transparentBackground' : '')} role='alert'>
       {this.dialogContent}
     </div>
   }
