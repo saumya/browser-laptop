@@ -713,6 +713,10 @@
     }
   }
 
+  .endButtons {
+    display: flex;
+  }
+
   &:not(.titleMode) {
     > * {
       animation: fadeIn .6s;
@@ -721,6 +725,12 @@
     }
 
     // Create 25x25 square and place .bookmarkButton at the center of it
+    .urlbarForm {
+        &.noBorderRadius {
+        border-radius: 0;
+      }
+    }
+
     .bookmarkButtonContainer {
       border: 1px solid #CBCBCB;
       border-radius: @borderRadius;
@@ -751,6 +761,30 @@
           background: url('../img/toolbar/bookmark_marked.svg') center no-repeat;
           background-size: 14px 14px;
         }
+      }
+    }
+
+    .addPublisherButtonContainer {
+      border: 1px solid #CBCBCB;
+      border-radius: 4px;
+      border-left: none;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      border-bottom-color: rgba(0,0,0,0.1);
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      height: 25px;
+      width: 25px;
+
+      &.authorizedPublisher {
+        button {
+          color: @braveOrange
+        }
+      }
+
+      button {
+        font-size: 14px;
       }
     }
   }
