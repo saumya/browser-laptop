@@ -535,6 +535,15 @@ WindowStore
     }
   },
   publisherInfo: {
+    location: {
+      [url] {                    // Publisher location
+        timestamp: number,
+        protocol: string,        // http or https
+        faviconURL: string,      // URL of the favicon
+        publisher: string        // publisher site, e.g., "https://wikipedia.org/"
+      }
+    },
+
     synopsis: [ { // one entry for each publisher having a non-zero `score`
       rank: number,              // i.e., 1, 2, 3, ...
       verified: boolean,         // there is a verified wallet for this publisher

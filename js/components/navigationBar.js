@@ -129,17 +129,21 @@ class NavigationBar extends ImmutableComponent {
 
   get enabledPublisher () {
     const hostSettings = this.props.allSiteSettings.get(this.hostPattern)
+    return hostSettings && hostSettings.get('ledgerPayments') !== false
+  }
 
-    if (hostSettings) {
-      const result = hostSettings.get('ledgerPayments')
-      if (typeof result === 'boolean') {
-        return result
-      } else {
-        // Sometimes result can be {}. If so, assume it's true
-        return true
+  get shouldShowAddPublisherButton () {
+    const publisherLocation = this.props.publisherInfo.get('location')
+    const hostSettings = this.props.allSiteSettings.get(this.hostPattern)
+
+    if (hostSettings && publisherLocation) {
+      const ledgerPaymentsShown = hostSettings.get('ledgerPaymentsShown')
+      const validPublisher = !!publisherLocation.get(this.props.location)
+
+      if (validPublisher && ledgerPaymentsShown !== false) {
+        return !getSetting(settings.AUTO_SUGGEST_SITES) && !getSetting(settings.HIDE_EXCLUDED_SITES)
       }
     }
-    // Return false if we can't find the hostPattern
     return false
   }
 
@@ -162,14 +166,14 @@ class NavigationBar extends ImmutableComponent {
     // Left Publisher disabled after inserted on Payments
     // until the user toggle enabled payment option
     this.enabledPublisher
+    this.shouldShowAddPublisherButton
   }
 
   render () {
     if (this.props.activeFrameKey === undefined) {
       return null
     }
-
-    const showAddPublisherButton = !getSetting(settings.AUTO_SUGGEST_SITES) && !getSetting(settings.HIDE_EXCLUDED_SITES)
+    console.log('LOCATION HERE -----------------', !!this.props.publisherInfo)
 
     return <div id='navigator'
       ref='navigator'
@@ -247,7 +251,7 @@ class NavigationBar extends ImmutableComponent {
         urlbar={this.props.navbar.get('urlbar')}
         onStop={this.onStop}
         menubarVisible={this.props.menubarVisible}
-        noBorderRadius={showAddPublisherButton}
+        noBorderRadius={this.shouldShowAddPublisherButton}
         />
       {
         isSourceAboutUrl(this.props.location)
@@ -256,7 +260,7 @@ class NavigationBar extends ImmutableComponent {
         </div>
         : <div className='endButtons'>
           {
-            showAddPublisherButton
+            this.shouldShowAddPublisherButton
             ? <span className={cx({
               addPublisherButtonContainer: true,
               authorizedPublisher: this.enabledPublisher

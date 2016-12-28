@@ -1676,5 +1676,6 @@ module.exports = {
   recoverKeys: recoverKeys,
   backupKeys: backupKeys,
   quit: quit,
-  boot: boot
+  boot: boot,
+  locations: locations
 }

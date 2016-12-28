@@ -499,6 +499,9 @@ const handleAppAction = (action) => {
       }
       appState = aboutNewTabState.setSites(appState, action)
       appState = aboutHistoryState.setHistory(appState, action)
+
+      const location = ledger.locations
+      appState = appState.setIn(['publisherInfo', 'location'], Immutable.fromJS(location))
       break
     case appConstants.APP_REMOVE_SITE:
       appState = appState.set('sites', siteUtil.removeSite(appState.get('sites'), action.siteDetail, action.tag))
