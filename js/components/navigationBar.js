@@ -133,12 +133,11 @@ class NavigationBar extends ImmutableComponent {
   }
 
   get shouldShowAddPublisherButton () {
-    const publisherLocation = this.props.publisherInfo.get('location')
     const hostSettings = this.props.allSiteSettings.get(this.hostPattern)
 
-    if (hostSettings && publisherLocation) {
+    if (hostSettings && this.props.publisherLocation) {
       const ledgerPaymentsShown = hostSettings.get('ledgerPaymentsShown')
-      const validPublisher = !!publisherLocation.get(this.props.location)
+      const validPublisher = !!this.props.publisherLocation.get(this.props.location)
 
       if (validPublisher && ledgerPaymentsShown !== false) {
         return !getSetting(settings.AUTO_SUGGEST_SITES) && !getSetting(settings.HIDE_EXCLUDED_SITES)
@@ -173,7 +172,7 @@ class NavigationBar extends ImmutableComponent {
     if (this.props.activeFrameKey === undefined) {
       return null
     }
-    console.log('LOCATION HERE -----------------', !!this.props.publisherInfo)
+    console.log('LOCATION HERE -----------------', JSON.stringify(this.props.publisherLocation))
 
     return <div id='navigator'
       ref='navigator'
