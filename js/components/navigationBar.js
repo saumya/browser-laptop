@@ -112,6 +112,8 @@ class NavigationBar extends ImmutableComponent {
   componentDidMount () {
     ipc.on(messages.SHORTCUT_ACTIVE_FRAME_BOOKMARK, () => this.onToggleBookmark())
     ipc.on(messages.SHORTCUT_ACTIVE_FRAME_REMOVE_BOOKMARK, () => this.onToggleBookmark())
+    this.enabledPublisher
+    this.shouldShowAddPublisherButton
   }
 
   get showNoScriptInfo () {
@@ -134,12 +136,14 @@ class NavigationBar extends ImmutableComponent {
 
   get shouldShowAddPublisherButton () {
     const hostSettings = this.props.allSiteSettings.get(this.hostPattern)
+    const publisherLocation = this.props.publisherLocation
 
-    if (hostSettings && this.props.publisherLocation) {
+    if (hostSettings && publisherLocation) {
       const ledgerPaymentsShown = hostSettings.get('ledgerPaymentsShown')
-      const validPublisher = !!this.props.publisherLocation.get(this.props.location)
+      const validPublisher = !!publisherLocation.get(this.props.location)
 
       if (validPublisher && ledgerPaymentsShown !== false) {
+        // Only show publisher icon if both settings are disabled
         return !getSetting(settings.AUTO_SUGGEST_SITES) && !getSetting(settings.HIDE_EXCLUDED_SITES)
       }
     }
@@ -172,7 +176,6 @@ class NavigationBar extends ImmutableComponent {
     if (this.props.activeFrameKey === undefined) {
       return null
     }
-    console.log('LOCATION HERE -----------------', JSON.stringify(this.props.publisherLocation))
 
     return <div id='navigator'
       ref='navigator'

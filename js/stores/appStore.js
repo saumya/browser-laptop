@@ -41,7 +41,7 @@ const basicAuthState = require('../../app/common/state/basicAuthState')
 const extensionState = require('../../app/common/state/extensionState')
 const aboutNewTabState = require('../../app/common/state/aboutNewTabState')
 const aboutHistoryState = require('../../app/common/state/aboutHistoryState')
-const publisherState = require('../../app/common/state/publisherState')
+const paymentState = require('../../app/common/state/paymentState')
 const windowState = require('../../app/common/state/windowState')
 
 const webtorrent = require('../../app/browser/webtorrent')
@@ -370,6 +370,7 @@ const handleAppAction = (action) => {
     return
   }
 
+  const ledger = require('../../app/ledger')
   appState = applyReducers(appState, action)
 
   switch (action.actionType) {
@@ -498,7 +499,7 @@ const handleAppAction = (action) => {
       }
       appState = aboutNewTabState.setSites(appState, action)
       appState = aboutHistoryState.setHistory(appState, action)
-      appState = publisherState.setLocation(appState)
+      appState = paymentState.setLocation(appState, ledger.locations)
       break
     case appConstants.APP_REMOVE_SITE:
       appState = appState.set('sites', siteUtil.removeSite(appState.get('sites'), action.siteDetail, action.tag))
@@ -611,10 +612,10 @@ const handleAppAction = (action) => {
         break
       }
     case appConstants.APP_UPDATE_LEDGER_INFO:
-      appState = publisherState.setLedgerInfo(appState, action)
+      appState = paymentState.setLedgerInfo(appState, action.ledgerInfo)
       break
     case appConstants.APP_UPDATE_PUBLISHER_INFO:
-      appState = publisherState.setPublisherInfo(appState, action)
+      appState = paymentState.setPublisherInfo(appState, action.publisherInfo)
       break
     case appConstants.APP_SHOW_MESSAGE_BOX:
       let notifications = appState.get('notifications')
@@ -672,10 +673,10 @@ const handleAppAction = (action) => {
       appState = appState.setIn(['dictionary', 'locale'], action.locale)
       break
     case appConstants.APP_BACKUP_KEYS:
-      appState = publisherState.onBackupKeys(appState, action)
+      appState = paymentState.onBackupKeys(appState, action, ledger)
       break
     case appConstants.APP_RECOVER_WALLET:
-      appState = publisherState.onRecoverKeys(appState, action)
+      appState = paymentState.onRecoverKeys(appState, action, ledger)
       break
     case appConstants.APP_LEDGER_RECOVERY_SUCCEEDED:
       appState = appState.setIn(['ui', 'about', 'preferences', 'recoverySucceeded'], true)
