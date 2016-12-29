@@ -987,9 +987,20 @@ table.sortableTable {
   }
 
   .advancedSettingsWrapper {
-    display: flex;
-    justify-content: flex-end;
-    padding-bottom: 15px;
+    // cf: .hideExcludedSites
+    @margin-bottom: @walletBarMargin / 2;
+
+    text-align: right;
+    margin-right: @walletBarPadding;
+    margin-bottom: @margin-bottom;
+
+    // align the button with .autoSuggestSwitch
+    position: relative;
+    left: 3px;
+
+    button {
+      min-width: 235px; // PR #6287
+    }
   }
 
   // This defines the styling of the title row (1st) on about:preferences#payments
@@ -1001,20 +1012,22 @@ table.sortableTable {
     .paymentsSwitches {
       display: flex;
 
-      .enablePaymentsSwitch, .autoSuggestSwitch {
+      .enablePaymentsSwitch,
+      .autoSuggestSwitch {
         display: flex;
         align-items: center;
         width: @walletBarTableData;
 
-        span, .moreInfoBtn {
-          font-weight: bold;
-          color: @gray;
+        .settingItem .switchControl {
+          padding-top: 0;
+          padding-bottom: 0;
         }
 
+        span,
         .moreInfoBtn {
-          margin-left: 7px;
-          cursor: pointer;
-          text-decoration: none;
+          font-weight: bold;
+          font-size: @fontSize;
+          color: @gray;
         }
 
         label {
@@ -1022,22 +1035,24 @@ table.sortableTable {
           color: @braveOrange;
         }
       }
-    }
 
-    .autoSuggestSwitch {
-      margin-right: 25px;
-      width: 220px;
-    }
+      .autoSuggestSwitch {
+        position: relative;
+        left: -5px; // .prefTabContainer .switchControl
 
-    .advancedSettings {
-      min-width: 235px; // .walletBar td min-width
+        .moreInfoBtn {
+          margin-left: 7px;
+          cursor: pointer;
+          text-decoration: none;
+        }
+      }
     }
   }
 
   .paymentsMessage {
     background-color: @lightGray;
     border-radius: @borderRadiusUIbox;
-    margin: @walletBarMargin;
+    margin-top: @walletBarMargin;
     padding: 40px;
     font-size: @fontSize;
     line-height: 1.8em;
